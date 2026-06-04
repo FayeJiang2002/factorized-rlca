@@ -307,17 +307,6 @@
           </p>
           <ul>
             <li>
-              <strong>Factorized Search-Space Reduction:</strong> A naive discretization of all joints jointly
-              yields a flat action space that grows multiplicatively,forcing the agent to search over every coupled
-              torque combination at once. By exploiting the robot's morphological symmetry, we factorize the
-              global value function into joint-specific sub-policies, so that correlated per-joint actions are
-              evaluated independently and the search collapses from a multiplicative product
-              (11&nbsp;&times;&nbsp;11&nbsp;&times;&nbsp;11) to an additive sum
-              (11&nbsp;+&nbsp;11&nbsp;+&nbsp;11&nbsp;=&nbsp;33). This drastically shrinks the exploration
-              surface and the number of Q-values to estimate, accelerating convergence while still letting the
-              localized sub-policies coordinate into complex global gaits.
-            </li>
-            <li>
               <strong>Elimination of Real-time Floating-point Scaling:</strong> Rather than computing
               expensive continuous projections or non-linear activations (e.g., Tanh) at the output layer to
               generate exact torques, the embedded controller performs a simple integer <code>argmax</code>
@@ -334,6 +323,15 @@
               replacing internal floating-point weights with ternary or low-bit integer operations, the entire
               pipeline can eventually be executed using integer-only arithmetic, achieving high-frequency,
               real-time robotic control on hardware devoid of Dedicated Floating-Point Units (FPUs).
+            </li>
+            <li>
+              <strong>Factorized Search-Space Reduction:</strong> A naive discretization of all joints jointly
+              yields a flat action space that grows multiplicatively,forcing the agent to search over every coupled
+              torque combination at once. By exploiting the robot's morphological symmetry, we factorize the
+              global value function into joint-specific sub-policies, so that correlated per-joint actions are
+              evaluated independently. This drastically shrinks the exploration
+              surface and the number of Q-values to estimate, accelerating convergence while still letting the
+              localized sub-policies coordinate into complex global gaits.
             </li>
           </ul>
         </div>
