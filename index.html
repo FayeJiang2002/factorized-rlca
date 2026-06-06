@@ -277,7 +277,7 @@
             Across LunarLander-v3 and Hopper-v5, our experiments confirm this design: the discretized,
             value-based controller reaches performance comparable to the original policy-based continuous
             methods while avoiding floating-point action generation. On Hopper-v5, the best factorized
-            configuration&mdash;decoupling the thigh while keeping the calf&ndash;ankle pair
+            configuration&mdash;decoupling the thigh while keeping the leg&ndash;foot pair
             coupled&mdash;attains a competitive reward and converges in roughly 25&ndash;33% fewer
             interactions than the PPO and SAC baselines, demonstrating markedly higher sample
             efficiency and making the controller well suited for embedded and edge deployment.
@@ -471,8 +471,8 @@
             We analyze the impact of factorization on high-dimensional control across five action
             configurations, alongside the continuous PPO and SAC baselines. For the Partial Factorization
             family (132 actions), we sweep all three ways of choosing which joint to decouple from the
-            remaining coupled pair: <em>Coupled Thigh&ndash;Ankle</em>(i.e., the calf is decoupled into its own sub-policy), <em>Coupled Calf&ndash;Ankle</em>
-            , and <em>Coupled Thigh&ndash;Calf</em>.
+            remaining coupled pair: <em>Coupled Thigh&ndash;Foot</em>, <em>Coupled Leg&ndash;Foot</em>
+            (i.e., the thigh is decoupled into its own sub-policy), and <em>Coupled Thigh&ndash;Leg</em>.
           </p>
         </div>
         <div class="table-container">
@@ -514,14 +514,14 @@
                 <td></td>
               </tr>
               <tr>
-                <td style="padding-left: 2em;">Coupled Thigh&ndash;Ankle</td>
+                <td style="padding-left: 2em;">Coupled Thigh&ndash;Foot</td>
                 <td></td>
                 <td class="has-text-right">703,516</td>
                 <td class="has-text-right">3,149</td>
               </tr>
               <tr style="background-color: #fff3bf;">
                 <td style="padding-left: 2em;">
-                  Coupled Calf&ndash;Ankle <em>(thigh decoupled)</em>
+                  Coupled Leg&ndash;Foot <em>(thigh decoupled)</em>
                   <span class="tag is-warning is-light ml-2">&#9733; Best</span>
                 </td>
                 <td></td>
@@ -529,7 +529,7 @@
                 <td class="has-text-right"><strong>2,828</strong></td>
               </tr>
               <tr>
-                <td style="padding-left: 2em;">Coupled Thigh&ndash;Calf</td>
+                <td style="padding-left: 2em;">Coupled Thigh&ndash;Leg</td>
                 <td></td>
                 <td class="has-text-right">653,206</td>
                 <td class="has-text-right">2,725</td>
@@ -544,7 +544,7 @@
           </table>
           <p class="is-size-7 has-text-grey mt-2">
             <span style="display:inline-block; width:0.9em; height:0.9em; background-color:#fff3bf; border:1px solid #e0c000; vertical-align:middle;"></span>
-            Best configuration: <strong>Coupled Calf&ndash;Ankle</strong> &mdash; fastest convergence
+            Best configuration: <strong>Coupled Leg&ndash;Foot</strong> &mdash; fastest convergence
             (301,173 steps) at a competitive reward.
           </p>
         </div>
@@ -555,13 +555,13 @@
           <p>
             Our Hopper-v5 results confirm the core premise of Factorized-RLCA: the right factorization
             matches continuous policy-based control while training far faster. The standout configuration is
-            Coupled Calf&ndash;Ankle, which decouples the thigh into its own
-            sub-policy and keeps the calf&ndash;ankle pair coupled. It converges in just the fastest of all methods, about 25&ndash;33% fewer
+            Coupled Leg&ndash;Foot, which decouples the thigh into its own
+            sub-policy and keeps the leg&ndash;foot pair coupled. It converges in just the fastest of all methods, about 25&ndash;33% fewer
             interactions than PPO and SAC&mdash;at a competitive reward,
             while shrinking the action space from 1,331 to 132. This matches the robot's morphology: the thigh
-            sets the global hopping rhythm, while the calf and ankle form a coordinated lower-limb unit.
+            sets the global hopping rhythm, while the leg and foot form a coordinated lower-limb unit.
             Coupling the thigh instead inflates training past 650k steps, and the fully decoupled 33-action
-            variant trades away the coordination the calf&ndash;ankle pairing preserves. In short,
+            variant trades away the coordination the leg&ndash;foot pairing preserves. In short,
             Factorized-RLCA exploits morphological structure to deliver baseline-level control with
             markedly higher sample efficiency.
           </p>
