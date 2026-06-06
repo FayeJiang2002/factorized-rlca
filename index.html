@@ -50,8 +50,7 @@
   <meta name="citation_publication_date" content="2026">
   <!-- TODO: Add conference/venue if applicable -->
   <meta name="citation_conference_title" content="">
-  <!-- TODO: Add hosted PDF URL when available -->
-  <meta name="citation_pdf_url" content="">
+  <meta name="citation_pdf_url" content="static/pdfs/factorized_rlca_paper.pdf">
 
   <!-- Additional SEO -->
   <meta name="theme-color" content="#2563eb">
@@ -167,7 +166,9 @@
     "name": "National Yang Ming Chiao Tung University",
     "url": "https://www.nycu.edu.tw/",
     "logo": "static/images/favicon.ico",
-    "sameAs": []
+    "sameAs": [
+      "https://github.com/wii30177/RLCA"
+    ]
   }
   </script>
 </head>
@@ -207,14 +208,9 @@
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">Factorized RLCA for Multi-Joint Control and Combinatorial Resource Allocation</h1>
             <div class="is-size-5 publication-authors">
-              <!-- TODO: Add personal links for each author when available -->
-              <span class="author-block">
-                <a href="#" target="_blank">Ming-Wei Hsiao</a>,</span>
-                <span class="author-block">
-                  <a href="#" target="_blank">Yin-Fei Jiang</a>,</span>
-                  <span class="author-block">
-                    <a href="#" target="_blank">Chia-Yu Chang</a>
-                  </span>
+              <span class="author-block">Ming-Wei Hsiao,</span>
+                <span class="author-block">Yin-Fei Jiang,</span>
+                  <span class="author-block">Chia-Yu Chang</span>
                   </div>
 
                   <div class="is-size-5 publication-authors">
@@ -223,9 +219,8 @@
 
                   <div class="column has-text-centered">
                     <div class="publication-links">
-                         <!-- TODO: Add a link to the hosted paper PDF when available -->
                       <span class="link-block">
-                        <a href="#" target="_blank"
+                        <a href="static/pdfs/factorized_rlca_paper.pdf" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
@@ -234,9 +229,8 @@
                       </a>
                     </span>
 
-                  <!-- TODO: Replace with your GitHub repository URL -->
                   <span class="link-block">
-                    <a href="#" target="_blank"
+                    <a href="https://github.com/wii30177/RLCA" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
@@ -284,8 +278,8 @@
             value-based controller reaches performance comparable to the original policy-based continuous
             methods while avoiding floating-point action generation. On Hopper-v5, the best factorized
             configuration&mdash;decoupling the thigh while keeping the calf&ndash;ankle pair
-            coupled&mdash;attains a competitive reward and converges in roughly <strong>25&ndash;33% fewer
-            interactions</strong> than the PPO and SAC baselines, demonstrating markedly higher sample
+            coupled&mdash;attains a competitive reward and converges in roughly 25&ndash;33% fewer
+            interactions than the PPO and SAC baselines, demonstrating markedly higher sample
             efficiency and making the controller well suited for embedded and edge deployment.
           </p>
         </div>
@@ -477,8 +471,8 @@
             We analyze the impact of factorization on high-dimensional control across five action
             configurations, alongside the continuous PPO and SAC baselines. For the Partial Factorization
             family (132 actions), we sweep all three ways of choosing which joint to decouple from the
-            remaining coupled pair: <em>Coupled Thigh&ndash;Ankle</em>, <em>Coupled Calf&ndash;Ankle</em>
-            (i.e., the thigh is decoupled into its own sub-policy), and <em>Coupled Thigh&ndash;Calf</em>.
+            remaining coupled pair: <em>Coupled Thigh&ndash;Ankle</em>(i.e., the calf is decoupled into its own sub-policy), <em>Coupled Calf&ndash;Ankle</em>
+            , and <em>Coupled Thigh&ndash;Calf</em>.
           </p>
         </div>
         <div class="table-container">
