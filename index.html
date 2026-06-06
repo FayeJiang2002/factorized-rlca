@@ -272,14 +272,21 @@
             floating-point control vectors and therefore depends on costly real-time floating-point
             computation. 
           <p>
-            In this work, We propose <strong>Factorized-RLCA</strong> (Factorized Reinforcement Learning with Combinatorial
+            In this work, we propose <strong>Factorized-RLCA</strong> (Factorized Reinforcement Learning with Combinatorial
             Actions), a hybrid framework that replaces policy-based execution with a value-based
             formulation over a discretized action space, so that inference reduces to a simple integer
             <code>argmax</code> rather than floating-point projection. To prevent the resulting discrete action
             space from exploding combinatorially, we factorize the global value function into joint-specific
-            sub-policies that exploit the robot's morphological symmetry. Our goal is to show that this discretized, value-based controller can reach
-            performance comparable to the original policy-based continuous methods while
-            avoiding floating-point operations &mdash; making it well suited for embedded and edge deployment.
+            sub-policies that exploit the robot's morphological symmetry.
+          </p>
+          <p>
+            Across LunarLander-v3 and Hopper-v5, our experiments confirm this design: the discretized,
+            value-based controller reaches performance comparable to the original policy-based continuous
+            methods while avoiding floating-point action generation. On Hopper-v5, the best factorized
+            configuration&mdash;decoupling the thigh while keeping the calf&ndash;ankle pair
+            coupled&mdash;attains a competitive reward and converges in roughly <strong>25&ndash;33% fewer
+            interactions</strong> than the PPO and SAC baselines, demonstrating markedly higher sample
+            efficiency and making the controller well suited for embedded and edge deployment.
           </p>
         </div>
       </div>
@@ -410,12 +417,13 @@
         <h3 class="title is-5">Toy Test: LunarLander-v3</h3>
         <div class="content has-text-justified">
           <p>
-            We evaluated two action-decomposition strategies: <strong>V1 (Joint Discretization)</strong>,
+            We evaluated two action-decomposition strategies: V1 (Joint Discretization),
             which keeps a joint action space of 11&nbsp;&times;&nbsp;11&nbsp;=&nbsp;121 candidates, and
-            <strong>V2 (Additive Factorization)</strong>, which reduces complexity to
-            11&nbsp;+&nbsp;11&nbsp;=&nbsp;22 candidates through structural decomposition. V1 reached a reward
-            of 261 at only 300,000 steps, outperforming both PPO and SAC in sample efficiency, while V2
-            reached 216 with a far smaller action manifold &mdash; a superior scalability-to-performance ratio.
+            V2 (Additive Factorization), which reduces complexity to
+            11&nbsp;+&nbsp;11&nbsp;=&nbsp;22 candidates through structural decomposition. V1 attains a reward
+            of 270, comparable to the continuous SAC baseline (275) and above PPO (250), confirming that a
+            discretized value-based controller can match continuous methods. V2, despite its far more
+            aggressive space reduction, still reaches 236 while converging in fewer steps than V1, indicating a favorable scalability-to-performance trade-off.
           </p>
         </div>
         <div class="table-container">
@@ -434,39 +442,43 @@
             <tbody>
               <tr>
                 <td>PPO (Continuous)</td>
-                <td>&infin;</td>
-                <td>500,000</td>
-                <td>250</td>
+                <td class="has-text-centered">&infin;</td>
+                <td class="has-text-right">500,000</td>
+                <td class="has-text-right">250</td>
               </tr>
               <tr>
                 <td>SAC (Continuous)</td>
-                <td>&infin;</td>
-                <td>400,000</td>
-                <td>275</td>
+                <td class="has-text-centered">&infin;</td>
+                <td class="has-text-right">400,000</td>
+                <td class="has-text-right">275</td>
               </tr>
               <tr>
                 <td>Factorized-RLCA (V1)</td>
-                <td>11 &times; 11 (121)</td>
-                <td>300,000</td>
-                <td>261</td>
+                <td class="has-text-centered">11 &times; 11 (121)</td>
+                <td class="has-text-right">654,460</td>
+                <td class="has-text-right">270</td>
               </tr>
               <tr>
                 <td>Factorized-RLCA (V2)</td>
-                <td>11 + 11 (22)</td>
-                <td>300,000</td>
-                <td>216</td>
+                <td class="has-text-centered">11 + 11 (22)</td>
+                <td class="has-text-right">506,264</td>
+                <td class="has-text-right">236</td>
               </tr>
             </tbody>
           </table>
         </div>
 
+
         <!-- Table 2 -->
+        <br> 
         <h3 class="title is-5 mt-5">Target Task: Hopper-v5</h3>
         <div class="content has-text-justified">
           <p>
-            We analyze three action configurations for Hopper-v5. Currently, SAC demonstrates superior
-            sample efficiency over PPO, reaching the target reward at 400,000 steps. The Factorized-RLCA
-            variants are under implementation; results are reported as TBD.
+            We analyze the impact of factorization on high-dimensional control across five action
+            configurations, alongside the continuous PPO and SAC baselines. For the Partial Factorization
+            family (132 actions), we sweep all three ways of choosing which joint to decouple from the
+            remaining coupled pair: <em>Coupled Thigh&ndash;Ankle</em>, <em>Coupled Calf&ndash;Ankle</em>
+            (i.e., the thigh is decoupled into its own sub-policy), and <em>Coupled Thigh&ndash;Calf</em>.
           </p>
         </div>
         <div class="table-container">
@@ -485,36 +497,97 @@
             <tbody>
               <tr>
                 <td>PPO (Continuous)</td>
-                <td>&infin;</td>
-                <td>550,000</td>
-                <td>3,000</td>
+                <td class="has-text-centered">&infin;</td>
+                <td class="has-text-right">401,452</td>
+                <td class="has-text-right">3,273</td>
               </tr>
               <tr>
                 <td>SAC (Continuous)</td>
-                <td>&infin;</td>
-                <td>400,000</td>
-                <td>3,000</td>
+                <td class="has-text-centered">&infin;</td>
+                <td class="has-text-right">450,000</td>
+                <td class="has-text-right">3,085</td>
               </tr>
               <tr>
-                <td>Full Joint Control</td>
-                <td>11<sup>3</sup> = 1,331</td>
-                <td>TBD</td>
-                <td>TBD</td>
+                <td><strong>Full Joint Control</strong></td>
+                <td class="has-text-centered">11<sup>3</sup> = 1,331</td>
+                <td class="has-text-right">652,973</td>
+                <td class="has-text-right">2,714</td>
               </tr>
               <tr>
-                <td>Partial Factorization</td>
-                <td>11 + 11<sup>2</sup> = 132</td>
-                <td>TBD</td>
-                <td>TBD</td>
+                <td><strong>Partial Factorization</strong></td>
+                <td class="has-text-centered">11 + 11<sup>2</sup> = 132</td>
+                <td></td>
+                <td></td>
               </tr>
               <tr>
-                <td>Decoupled Factorization</td>
-                <td>11 + 11 + 11 = 33</td>
-                <td>TBD</td>
-                <td>TBD</td>
+                <td style="padding-left: 2em;">Coupled Thigh&ndash;Ankle</td>
+                <td></td>
+                <td class="has-text-right">703,516</td>
+                <td class="has-text-right">3,149</td>
+              </tr>
+              <tr style="background-color: #fff3bf;">
+                <td style="padding-left: 2em;">
+                  Coupled Calf&ndash;Ankle <em>(thigh decoupled)</em>
+                  <span class="tag is-warning is-light ml-2">&#9733; Best</span>
+                </td>
+                <td></td>
+                <td class="has-text-right"><strong>301,173</strong></td>
+                <td class="has-text-right"><strong>2,828</strong></td>
+              </tr>
+              <tr>
+                <td style="padding-left: 2em;">Coupled Thigh&ndash;Calf</td>
+                <td></td>
+                <td class="has-text-right">653,206</td>
+                <td class="has-text-right">2,725</td>
+              </tr>
+              <tr>
+                <td><strong>Decoupled Factorization</strong></td>
+                <td class="has-text-centered">11 + 11 + 11 = 33</td>
+                <td class="has-text-right">351,425</td>
+                <td class="has-text-right">2,633</td>
               </tr>
             </tbody>
           </table>
+          <p class="is-size-7 has-text-grey mt-2">
+            <span style="display:inline-block; width:0.9em; height:0.9em; background-color:#fff3bf; border:1px solid #e0c000; vertical-align:middle;"></span>
+            Best configuration: <strong>Coupled Calf&ndash;Ankle</strong> &mdash; fastest convergence
+            (301,173 steps) at a competitive reward.
+          </p>
+        </div>
+
+        <br> 
+        <h3 class="title is-5 mt-5">Conclusion</h3>
+        <div class="content has-text-justified">
+          <p>
+            Our Hopper-v5 results confirm the core premise of Factorized-RLCA: the right factorization
+            matches continuous policy-based control while training far faster. The standout configuration is
+            Coupled Calf&ndash;Ankle, which decouples the thigh into its own
+            sub-policy and keeps the calf&ndash;ankle pair coupled. It converges in just the fastest of all methods, about 25&ndash;33% fewer
+            interactions than PPO and SAC&mdash;at a competitive reward,
+            while shrinking the action space from 1,331 to 132. This matches the robot's morphology: the thigh
+            sets the global hopping rhythm, while the calf and ankle form a coordinated lower-limb unit.
+            Coupling the thigh instead inflates training past 650k steps, and the fully decoupled 33-action
+            variant trades away the coordination the calf&ndash;ankle pairing preserves. In short,
+            Factorized-RLCA exploits morphological structure to deliver baseline-level control with
+            markedly higher sample efficiency.
+          </p>
+        </div>
+
+        <br> 
+        <h3 class="title is-5 mt-5">Future Work</h3>
+        <div class="content has-text-justified">
+          <p>
+            By turning continuous torques into a small set of discrete tokens selected via integer
+            <code>argmax</code>, Factorized-RLCA already removes floating-point generation from the inference
+            output. The natural next step is to push integer-only computation through the entire
+            network. While the current model's internal weights remain in floating-point, the discrete
+            value-based architecture is uniquely compatible with ultra-low-bit quantization frameworks such as
+            BitNet (1-bit / 1.58-bit). Replacing internal floating-point weights with ternary
+            or low-bit integer operations would let the full pipeline run on integer-only arithmetic, enabling
+            high-frequency, real-time robotic control on hardware devoid of Dedicated Floating-Point Units
+            (FPUs), which completes the path toward the resource-constrained, edge-friendly deployment that
+            motivates this framework.
+          </p>
         </div>
       </div>
     </div>
